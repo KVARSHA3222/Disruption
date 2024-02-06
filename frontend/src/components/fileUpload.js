@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Container, Box, FormControl, OutlinedInput, Select, MenuItem, Checkbox, FormControlLabel, Grid, Alert } from '@mui/material';
+import configData from './config.json'
+
+global.base = configData.SERVER_URL;
+console.log(configData.SERVER_URL);
 
 const FileUpload = () => {
   
@@ -44,6 +48,41 @@ const FileUpload = () => {
     }
   };
   
+   const handleUpload = () => {
+    // Create a FormData object
+    const formData = new FormData();
+    // Append the file to FormData
+    formData.append('file', selectedFile);
+
+    formData.append('fileName', selectedFile.name);
+    formData.append('description', formData.description);
+    formData.append('delimiter', formData.delimiter);
+    formData.append('expiration', formData.expiration);
+    formData.append('sharingFile', formData.sharingFile);
+
+    fetch(`${global.base}/upload`, {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          setFormData({
+            fileName: '',
+            description: '',
+            delimiter: '',
+            expiration: '',
+            sharingFile: false,
+          });
+          setAlert(null);
+        } else {
+          console.error('File upload failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+      });
+  };
   
   return (
   <Container align='center' style={{ paddingLeft: '200px', paddingRight: '200px' }}>
@@ -70,7 +109,7 @@ const FileUpload = () => {
     <p style={{ fontSize: "16px" }}>Drag and drop a Utilization File here, or click to select a file from your computer.</p>
     <p style={{ fontSize: "12px" }}>Supported Formats: .csv (recommended) and Microsoft Excel 2003 and above (.xls and .xlsx)</p>
     {alert&&<Alert severity={alert.severity}>{alert.message}</Alert>}
-    <Button component="label" variant="contained" >
+    <Button component="label" variant="contained">
       Upload
       <input type="file" accept=".xls,.xlsx,.csv" style={{ display: 'none' }} onChange={handleFileChange}/>
     </Button>
@@ -145,7 +184,7 @@ const FileUpload = () => {
           <Grid container justifyContent="flex-end">
           <Grid item>
             <Button size='small'>Cancel</Button>
-            <Button variant='contained' size='small'>Save</Button>
+            <Button variant='contained' size='small' onClick={handleUpload}>Save</Button>
           </Grid>
           </Grid>
       </Grid>
