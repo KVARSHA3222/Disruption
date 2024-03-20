@@ -5,7 +5,7 @@ function FormRow() {
   return (
     <React.Fragment>
       <Grid item>
-        <Button fullWidth variant='contained'>item1</Button>
+        <Button fullWidth variant='contained'>Item1</Button>
       </Grid>
       <Grid item>
         <Button fullWidth variant='contained'>Item2</Button>
@@ -22,7 +22,7 @@ const MyGrid = () => {
     <div style={{paddingTop:"50px",paddingLeft:"130px",paddingRight:"130px"}}>
       <Grid container spacing={5}> 
         <Grid container item direction="column" xs={6}><Typography>Completeness Score</Typography></Grid>
-        <Grid container item direction="column" xs={6}><Typography> Score</Typography></Grid>
+        <Grid container item direction="column" xs={6}><Typography>Accuracy Score</Typography></Grid>
         <Grid container item direction="column" xs={6} spacing={2}><FormRow/></Grid>
         <Grid container item direction="column" xs={6} spacing={2}><FormRow/></Grid>
       </Grid>
